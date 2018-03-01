@@ -10,7 +10,6 @@ import SortableTree from 'react-sortable-tree';
 import newPNG from '../../../assets/images/neww.png';
 import alertPNG from '../../../assets/images/alert.png';
 import okPNG from '../../../assets/images/ok.png';
-import RouterServiceVersion from '../../../services/dependencyManager/external/CallRouterServiceForVersion';
 import RouterServiceTree from '../../../services/dependencyManager/external/CallRouterServiceForTree';
 
 const styles = {
@@ -54,7 +53,6 @@ class ToolBarLibraryNameVersion extends Component {
             libLatestVersion: 'Make Selections' };
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.getLatestVersion = this.getLatestVersion.bind(this);
         this.getDependencyHeirarchy = this.getDependencyHeirarchy.bind(this);
     }
     /**
@@ -66,6 +64,8 @@ class ToolBarLibraryNameVersion extends Component {
     componentWillReceiveProps(props) {
         this.setState({
             libLatestVersion: 'NotFound',
+            libReleaseDate: 'Make Selections',
+            libLatestReleaseDate: 'Make Selections',
             buttonDisable: true,
             latestVersionfound: false,
             treeRetrieved: true,
@@ -77,38 +77,39 @@ class ToolBarLibraryNameVersion extends Component {
                 treeRetrieved: false,
                 libLatestVersion: 'Loading...' });
             this.getDependencyHeirarchy(props.libGroupID, props.libArtifactID, props.versionLibrary, props.librType);//eslint-disable-line
-            this.getLatestVersion(props.libGroupID, props.libArtifactID, props.librType);//eslint-disable-line   
         }
-        if(props.libGroupID == null){//eslint-disable-line
+        if(props.libGroupID == null && props.librLatest == null){//eslint-disable-line
             this.setState({
-                libLatestVersion: 'Group ID and Artifact ID are missing' });
+                libLatestReleaseDate: 'NotFound',
+                libLatestVersion: 'Group & Artifact ID are missing' });
         }
-    }
-    /**
-    * @class ToolbaLibraryNameVersion
-    * @extends {Component}
-    * @param {string} lbGroupID library group id
-    * @param {string} lbArtifactID library artifact id
-    * @param {string} lbType library library type
-    * @description Get Latest Version of the given Library
-    */
-    getLatestVersion(lbGroupID, lbArtifactID, lbType) {
-        RouterServiceVersion.callRouterServiceForLatestVersion(lbGroupID, lbArtifactID, lbType, true)
-            .then((response) => {
-                const res = JSON.stringify(response);
-                if (res.includes('NewestVersion', 0)) {
-                    this.setState({
-                        latestVersionfound: true,
-                        libLatestVersion: response.NewestVersion });
-                    if (this.state.libLatestVersion === this.props.versionLibrary) {
-                        this.setState({
-                            isLatest: false });
-                    }
-                } else {
-                    this.setState({
-                        libLatestVersion: 'NotFound' });
-                }
-            });
+        if(props.librLatest == null &&  props.libGroupID != null){//eslint-disable-line
+            this.setState({
+                libLatestVersion: 'Not Found' });
+        }
+        if(props.librDate != null){//eslint-disable-line
+            this.setState({
+                libReleaseDate: props.librDate });
+        } else {
+            this.setState({
+                libReleaseDate: 'NotFound' });
+        }
+        if(props.librLatest != null){//eslint-disable-line
+            this.setState({
+                libLatestVersion: props.librLatest,
+                latestVersionfound: true });
+            if (props.librLatest === props.versionLibrary) {
+                this.setState({
+                    isLatest: false });
+            }
+            if (props.librLatestDate != null) {//eslint-disable-line
+                this.setState({
+                    libLatestReleaseDate: props.librLatestDate });
+            } else {
+                this.setState({
+                    libLatestReleaseDate: 'NotFound' });
+            }
+        }
     }
     /**
     * @class ToolbaLibraryNameVersion
@@ -195,6 +196,10 @@ class ToolBarLibraryNameVersion extends Component {
                         <ToolbarTitle text="Library Type :" />
                         <Chip backgroundColor='#E65100'>{this.props.librType}</Chip>
                     </ToolbarGroup>
+                    <ToolbarGroup firstChild={false}>
+                        <ToolbarTitle text="Release Date :" />
+                        <Chip backgroundColor='#E65100'>{this.state.libReleaseDate}</Chip>
+                    </ToolbarGroup>
                     {this.props.getLatestVersion ?
                         <ToolbarGroup firstChild={true}>
                             <ToolbarTitle text="Latest Version :" />
@@ -234,6 +239,10 @@ class ToolBarLibraryNameVersion extends Component {
                             <Chip backgroundColor='#E65100'>Make Selections</Chip>
                         </ToolbarGroup>
                     }
+                    <ToolbarGroup firstChild={true}>
+                            <ToolbarTitle text="Latest Date :" />
+                            <Chip backgroundColor='#E65100'>{this.state.libLatestReleaseDate}</Chip>
+                        </ToolbarGroup>
                     <ToolbarGroup firstChild={true}>
                             <RaisedButton
                                 label="Dependency Heirarchy"

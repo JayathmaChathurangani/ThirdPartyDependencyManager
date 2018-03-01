@@ -32,6 +32,9 @@ export default class ViewByLibrary extends Component {
             lArtifactID: 'Makeselections',
             lGroupID: 'Makeselections',
             libType: 'Make selections',
+            libDate: 'Make selections',
+            libLatest: 'Make selections',
+            libLatestDate: 'Make selections',
             loadV: false,
             getLatest: false,
             conditionRender: false };
@@ -63,6 +66,9 @@ export default class ViewByLibrary extends Component {
             lArtifactID: 'Makeselections',
             lGroupID: 'Makeselections',
             libType: 'Make selections',
+            libDate: 'Make selections',
+            libLatest: 'Make selections',
+            libLatestDate: 'Make selections',
         });   //eslint-disable-line     
     }
     /**
@@ -83,6 +89,9 @@ export default class ViewByLibrary extends Component {
                 lArtifactID: 'Makeselections',
                 lGroupID: 'Makeselections',
                 libType: 'Make selections',
+                libDate: 'Make selections',
+                libLatest: 'Make selections',
+                libLatestDate: 'Make selections',
             });
         }
     }
@@ -106,13 +115,19 @@ export default class ViewByLibrary extends Component {
     * @param {string} gID group ID
     * @param {string} aID artifact ID
     * @param {string} lType library type
+    * @param {string} lDate library type
+    * @param {string} lLatest library type
+    * @param {string} lLatestDate library type
     * @description set group id artifact id
     */
-    setGroupIDArtifactID(gID, aID, lType) {  //eslint-disable-line
+    setGroupIDArtifactID(gID, aID, lType, lDate, lLatest, lLatestDate) {  //eslint-disable-line
         this.setState({
             lArtifactID: aID,
             lGroupID: gID,
             libType: lType,
+            libDate: lDate,
+            libLatest: lLatest,
+            libLatestDate: lLatestDate,
             conditionRender: true,
             getLatest: true,
         });   //eslint-disable-line
@@ -196,6 +211,9 @@ export default class ViewByLibrary extends Component {
                                 libGroupID={this.state.lGroupID}
                                 libArtifactID={this.state.lArtifactID}
                                 librType={this.state.libType}
+                                librDate={this.state.libDate}
+                                librLatest={this.state.libLatest}
+                                librLatestDate={this.state.libLatestDate}
                             />
                         </div>
                         <ProductComponentsTable

@@ -72,7 +72,7 @@ export default class MainView extends Component {
                         <div style={{  marginLeft: -15, textAlign: 'left' }}>
                             <AppBar
                                 onLeftIconButtonTouchTap={this.handleToggle}
-                                title='Third Party Dependencies Dashboard'
+                                title='Third Party Libraries Dashboard'
                             />
                         </div>
                         <div style={{  marginLeft: -15, textAlign: 'left' }}>

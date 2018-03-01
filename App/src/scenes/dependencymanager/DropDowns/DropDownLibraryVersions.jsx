@@ -48,9 +48,15 @@ class DropDownLibraryVersions extends Component {
                 update.groupIDartifactID(
                     response[0].LIB_GROUP_ID,
                     response[0].LIB_ARTIFACT_ID,
-                    response[0].LIB_TYPE);
+                    response[0].LIB_TYPE,
+                    response[0].LIB_DATE,
+                    response[0].LIB_LATEST_VERSION,
+                    response[0].LIB_LATEST_DATE);
             } else {
                 update.groupIDartifactID(
+                    'NotFound',
+                    'NotFound',
+                    'NotFound',
                     'NotFound',
                     'NotFound',
                     'NotFound');

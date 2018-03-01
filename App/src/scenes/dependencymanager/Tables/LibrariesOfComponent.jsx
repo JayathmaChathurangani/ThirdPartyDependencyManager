@@ -32,7 +32,9 @@ const columns = [
     { name: 'LibraryName', title: 'Library Name' },
     { name: 'LibraryType', title: 'Library Type' },
     { name: 'LibraryVersion', title: 'Current Version' },
+    { name: 'ReleaseDate', title: 'Release Date' },
     { name: 'LatestVersion', title: 'Latest Version' },
+    { name: 'LatestReleaseDate', title: 'Release Date of Latest' },
     { name: 'ArtifactID', title: 'Artifact ID' },
     { name: 'GroupID', title: 'Group ID' },
 ];
@@ -57,8 +59,10 @@ export default class LibrariesOfComponent extends React.PureComponent {
                 Count: 100,
                 LibraryName: 400,
                 LibraryVersion: 200,
-                LibraryType: 200,
+                ReleaseDate: 100,
+                LibraryType: 190,
                 LatestVersion: 300,
+                LatestReleaseDate: 200,
                 GroupID: 200,
                 ArtifactID: 200,
             },
@@ -108,11 +112,12 @@ export default class LibrariesOfComponent extends React.PureComponent {
             if (response.Libraries.length > 0) {
                 for (i; i < response.Libraries.length; i++) {
                     array[i] = {
-                        Count: i + 1,
                         LibraryName: response.Libraries[i].LIB_NAME,
                         LibraryType: response.Libraries[i].LIB_TYPE,
                         LibraryVersion: response.Libraries[i].LIB_VERSION,
+                        ReleaseDate: response.Libraries[i].LIB_RELEASE_DATE,
                         LatestVersion: response.Libraries[i].LATEST_VERSION,
+                        LatestReleaseDate: response.Libraries[i].LATEST_VERSION_DATE,
                         GroupID: response.Libraries[i].ARTIFACT_ID,
                         ArtifactID: response.Libraries[i].GROUP_ID,
                     };
