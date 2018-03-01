@@ -127,8 +127,7 @@ export default class ProductLevel extends Component {
                 <Tabs
                     value={this.state.slideIndex}
                     onChange={this.handleChange}
-                    style={{ backgroundColor: '#000000', activeColor: '#E91E63' }}
-                    // indicatorStyle={{ backgroundColor: '#212121' }}
+                    style={{ backgroundColor: '#000000' }}
                 >
                     <Tab
                         value="0"

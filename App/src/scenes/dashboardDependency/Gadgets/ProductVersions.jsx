@@ -6,7 +6,6 @@ import Redeye from 'material-ui/svg-icons/image/remove-red-eye';
 import Dialog from 'material-ui/Dialog';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import { GridTile } from 'material-ui/GridList';
 import { Grid, Typography } from 'material-ui-next';// eslint-disable-line
 import Config from 'config';
 import notOkPNG from '../../../assets/images/notOK.png';// eslint-disable-line
@@ -18,17 +17,6 @@ import LibrariesOfProd from '../../../services/dashboardDependency/database/GetP
 import ProductComponentDetails from '../../../services/dashboardDependency/database/GetProductComponentLibraries';
 import LoadingScreen from '../Common/LoadingScreen';
 
-const styles = {
-    gridTileStyle: {
-        position: 'relative',
-        // float: 'left',
-        width: '100%',
-        minHeight: '500px',
-        minWidth: '620px',
-        overflow: 'hidden',
-        paddingLeft: 10,
-    },
-};
 const customContentStyle = {
     position: 'absolute',
     zIndex: 2000,
@@ -57,6 +45,7 @@ export default class ProductVersions extends Component {
         super(props);
         this.state = {
             conditionRender: '',
+            expanded: false,
             productName: props.prName,
             productVersion: props.prVersion,
             disabledProductLevel: true,
@@ -92,6 +81,7 @@ export default class ProductVersions extends Component {
         this.handleOpenComponentDialog = this.handleOpenComponentDialog.bind(this);
         this.handleCloseProduct = this.handleCloseProduct.bind(this);
         this.handleCloseComponent = this.handleCloseComponent.bind(this);
+        this.handleExpandChange = this.handleExpandChange.bind(this);
     }
     /**
     * @class ProductVersions
@@ -287,6 +277,16 @@ export default class ProductVersions extends Component {
     /**
     * @class ProductVersions
     * @extends {Component}
+    * @param {any} expand expandstate
+    * @description handleExpandChange
+    */
+    handleExpandChange(expand) {
+        this.setState({
+            expanded: expand });
+    }
+    /**
+    * @class ProductVersions
+    * @extends {Component}
     * @description render method
     */
     render() {
@@ -307,11 +307,23 @@ export default class ProductVersions extends Component {
         let returnView;
         if (this.state.loadView) {
             returnView = (
-                <div>
+                <div
+                    key={this.props.prName}
+                    className="text-left"
+                    style={{ backgroundColor: '#000000', padding: '10px', width: 'auto' }}
+                >
                     {/* eslint-disable */}
-                    <Card>
-                        <CardHeader>
-                            <div style={{ backgroundColor: '#212121', paddingRight: '0', paddingLeft: 5, fontSize: '18px' }}>
+                    <Card
+                        expanded={this.state.expanded}
+                        onExpandChange={this.handleExpandChange}
+                    >
+                        <CardHeader
+                            actAsExpander={true}// eslint-disable-line
+                            showExpandableButton={true}// eslint-disable-line
+                            titleStyle={{ fontSize: '22px' }}
+                            style={{ backgroundColor: '#212121', paddingRight: '0', paddingLeft: '0', paddingTop: '0' }}
+                        >
+                            <div style={{ backgroundColor: '#212121', paddingRight: '0', paddingLeft: 5, fontSize: '20px' }}>
                                 {this.state.totalProductLibraries < 1 & this.state.totalComponentLibraries < 1 ?
                                     <Avatar
                                         size={50}
@@ -334,10 +346,10 @@ export default class ProductVersions extends Component {
                                         )
                                     ]
                                 }
-                                &nbsp;&nbsp;&nbsp;{this.props.prName}:&nbsp;&nbsp;{this.props.prVersion}
+                                &nbsp;&nbsp;&nbsp;Version:&nbsp;&nbsp;{this.props.prVersion}
                             </div>
                         </CardHeader>
-                        <CardText>
+                        <CardText expandable={true}>
                             <div style={{ textAlign: 'right'}}>
                                 <table>
                                     <thead>
@@ -381,56 +393,55 @@ export default class ProductVersions extends Component {
                                     </tbody>
                                 </table>
                             </div>
+                            <div>
+                                <CardActions style={{ padding: 10 }}>
+                                    <RaisedButton
+                                        label="Product Level"
+                                        primary={true}
+                                        onClick={this.handleOpenProductDialog}
+                                        disabled={this.state.disabledProductLevel}
+                                        icon={<Redeye />}
+                                    />
+                                    <Dialog
+                                            title={<div>Outdated Product Libraries of {this.props.prName} : {this.props.prVersion} </div>}
+                                            actions={actionsProduct}
+                                            // modal={true}
+                                            open={this.state.openProduct}
+                                            onRequestClose={this.handleCloseProduct}
+                                            contentStyle={customContentStyle}
+                                            autoScrollBodyContent={true}
+                                        >
+                                            <ProductLevelTabs
+                                                productLibraryData={this.state.productLibraryDetails}
+                                                referenceDate={this.state.outdatedReferenceDate}
+                                                outdatedMonthCount={this.state.outdatedMonths}
+                                            />
+                                    </Dialog>
+                                    <RaisedButton
+                                        label="Component Level"
+                                        primary={true}
+                                        onClick={this.handleOpenComponentDialog}
+                                        disabled={this.state.disabledComponentLevel}
+                                        icon={<Redeye />}
+                                    />
+                                    <Dialog
+                                            title={<div>Outdated Product Components of {this.props.prName} : {this.props.prVersion} </div>}
+                                            actions={actionsComponent}
+                                            // modal={true}
+                                            open={this.state.openComponent}
+                                            onRequestClose={this.handleCloseComponent}
+                                            contentStyle={customContentStyle}
+                                            autoScrollBodyContent={true}
+                                        >
+                                            <ComponentLevelTabs
+                                                componentLibraryData={this.state.componentLibraryDetails}
+                                                referenceDate={this.state.outdatedReferenceDate}
+                                                outdatedMonthCount={this.state.outdatedMonths}
+                                            />
+                                    </Dialog>
+                                </CardActions>
+                            </div>
                         </CardText>
-                        <CardActions style={{ padding: 10 }}>
-                            <RaisedButton
-                                label="Product Level"
-                                primary={true}
-                                onClick={this.handleOpenProductDialog}
-                                disabled={this.state.disabledProductLevel}
-                                icon={<Redeye />}
-                            />
-                            <Dialog
-                                    title={<div>Outdated Product Libraries of {this.props.prName} : {this.props.prVersion} </div>}
-                                    actions={actionsProduct}
-                                    // modal={true}
-                                    open={this.state.openProduct}
-                                    onRequestClose={this.handleCloseProduct}
-                                    contentStyle={customContentStyle}
-                                    autoScrollBodyContent={true}
-                                >
-                                    {/* <ProductLibraryTable
-                                        data={this.state.productLibraryDetails}
-                                    /> */}
-                                    <ProductLevelTabs
-                                        productLibraryData={this.state.productLibraryDetails}
-                                        referenceDate={this.state.outdatedReferenceDate}
-                                        outdatedMonthCount={this.state.outdatedMonths}
-                                    />
-                            </Dialog>
-                            <RaisedButton
-                                label="Component Level"
-                                primary={true}
-                                onClick={this.handleOpenComponentDialog}
-                                disabled={this.state.disabledComponentLevel}
-                                icon={<Redeye />}
-                            />
-                            <Dialog
-                                    title={<div>Outdated Product Components of {this.props.prName} : {this.props.prVersion} </div>}
-                                    actions={actionsComponent}
-                                    // modal={true}
-                                    open={this.state.openComponent}
-                                    onRequestClose={this.handleCloseComponent}
-                                    contentStyle={customContentStyle}
-                                    autoScrollBodyContent={true}
-                                >
-                                    <ComponentLevelTabs
-                                        componentLibraryData={this.state.componentLibraryDetails}
-                                        referenceDate={this.state.outdatedReferenceDate}
-                                        outdatedMonthCount={this.state.outdatedMonths}
-                                    />
-                            </Dialog>
-                        </CardActions>
                         {/* eslint-enable */}
                     </Card>
                 </div>
@@ -443,9 +454,9 @@ export default class ProductVersions extends Component {
             );
         }
         return (
-            <GridTile style={styles.gridTileStyle}>
+            <div style={{ width: 'auto' }}>
                 { returnView }
-            </GridTile>
+            </div>
         );
     }
 }

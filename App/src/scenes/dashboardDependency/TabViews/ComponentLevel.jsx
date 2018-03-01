@@ -51,7 +51,15 @@ export default class ComponentLevel extends Component {
             countOutdatedRelDateUnknownCompLibraries: 0,
             countOutdatedLessThanRefDateCompLibraries: 0,
             countOutdatedGreaterThanRefDateCompLibraries: 0,
+            slideIndexView: '0',
+            slideIndexCompLib: '2',
+            slideIndexLib: '10',
+            slideIndexComp: '8',
         };
+        this.handleChangeLib = this.handleChangeLib.bind(this);
+        this.handleChangeView = this.handleChangeView.bind(this);
+        this.handleChangeCompLib = this.handleChangeCompLib.bind(this);
+        this.handleChangeComp = this.handleChangeComp.bind(this);
     }
     /**
     * @class ComponentLevel
@@ -169,32 +177,148 @@ export default class ComponentLevel extends Component {
     /**
     * @class ComponentLevel
     * @extends {Component}
+    * @param {any} value value
+    * @description handling change of View tabs
+    */
+    handleChangeView(value) {
+        this.setState({
+            slideIndexView: value,
+        });
+    }
+    /**
+    * @class ComponentLevel
+    * @extends {Component}
+    * @param {any} value value
+    * @description handling change of component lib tabs
+    */
+    handleChangeCompLib(value) {
+        this.setState({
+            slideIndexCompLib: value,
+        });
+    }
+    /**
+    * @class ComponentLevel
+    * @extends {Component}
+    * @param {any} value value
+    * @description handling change of   library tabs
+    */
+    handleChangeLib(value) {
+        this.setState({
+            slideIndexLib: value,
+        });
+    }
+    /**
+    * @class ComponentLevel
+    * @extends {Component}
+    * @param {any} value value
+    * @description handling change of component tabs
+    */
+    handleChangeComp(value) {
+        this.setState({
+            slideIndexComp: value,
+        });
+    }
+    /**
+    * @class ComponentLevel
+    * @extends {Component}
     * @description render method
     */
     render() {
+        const styles = {
+            active_tab: {
+                color: '#F3E5F5',
+                backgroundColor: '#D50000',
+            },
+            default_tab_comp_lib: {
+                color: '#F3E5F5',
+                backgroundColor: '#1A237E',
+                fontWeight: 400,
+            },
+            default_tab_comp: {
+                color: '#F3E5F5',
+                backgroundColor: '#1A237E',
+                fontWeight: 400,
+            },
+            default_tab: {
+                color: '#F3E5F5',
+                backgroundColor: '#004D40',
+                fontWeight: 400,
+            },
+        };
+        styles.tab = [];
+        styles.tab[0] = styles.default_tab;
+        styles.tab[1] = styles.default_tab;
+        styles.tab[2] = styles.default_tab_comp_lib;
+        styles.tab[3] = styles.default_tab_comp_lib;
+        styles.tab[4] = styles.default_tab_comp_lib;
+        styles.tab[5] = styles.default_tab_comp_lib;
+        styles.tab[6] = styles.default_tab_comp_lib;
+        styles.tab[7] = styles.default_tab_comp_lib;
+        styles.tab[8] = styles.default_tab_comp;
+        styles.tab[9] = styles.default_tab_comp;
+        styles.tab[10] = styles.default_tab_comp_lib;
+        styles.tab[11] = styles.default_tab_comp_lib;
+        styles.tab[12] = styles.default_tab_comp_lib;
+        styles.tab[13] = styles.default_tab_comp_lib;
+        styles.tab[14] = styles.default_tab_comp_lib;
+        styles.tab[15] = styles.default_tab_comp_lib;
+        styles.tab[this.state.slideIndexLib] = Object.assign(
+            {},
+            styles.tab[this.state.slideIndexLib],
+            styles.active_tab);
+        styles.tab[this.state.slideIndexCompLib] = Object.assign(
+            {},
+            styles.tab[this.state.slideIndexCompLib],
+            styles.active_tab);
+        styles.tab[this.state.slideIndexView] = Object.assign(
+            {},
+            styles.tab[this.state.slideIndexView],
+            styles.active_tab);
+        styles.tab[this.state.slideIndexComp] = Object.assign(
+            {},
+            styles.tab[this.state.slideIndexComp],
+            styles.active_tab);
         return (
             <div>
-                <Tabs>
+                <Tabs
+                    value={this.state.slideIndexView}
+                    onChange={this.handleChangeView}
+                    style={{ backgroundColor: '#000000' }}
+                >
                     <Tab
+                        value="0"
                         label="Component View"
+                        style={styles.tab[0]}
                     >
                         <div>
                             <h5>
                                 Summary of Library details is shown component wise.
-                                (Click on the icon of component to expand)
+                                (Select a tab and Click on the icon of component to expand)
                             </h5>
                         </div>
                         <div>
-                            <Tabs>
+                            <Tabs
+                                value={this.state.slideIndexCompLib}
+                                onChange={this.handleChangeCompLib}
+                                style={{ backgroundColor: '#000000' }}
+                            >
                                 <Tab
+                                    value="2"
+                                    style={styles.tab[2]}
                                     label={<div>All<br /> Components</div>}
                                 >
                                     {this.state.countAllCompLibraries > 0 ?
                                         <div>
                                             <div>{this.state.countAllCompLibraries} Components are Found</div>
                                             <br />
-                                            <Tabs>
+                                            <Tabs
+                                                value={this.state.slideIndexComp}
+                                                onChange={this.handleChangeComp}
+                                                style={{ backgroundColor: '#000000' }}
+                                            >
                                                 <Tab
+                                                    value="8"
+                                                    style={styles.tab[8]}
                                                     label={<div>Components with<br /> Libraries</div>}
                                                 >
                                                     <div>
@@ -213,6 +337,8 @@ export default class ComponentLevel extends Component {
                                                     </div>
                                                 </Tab>
                                                 <Tab
+                                                    value="9"
+                                                    style={styles.tab[9]}
                                                     label={<div>Components without<br /> Libraries</div>}
                                                 >
                                                     <div>
@@ -241,6 +367,8 @@ export default class ComponentLevel extends Component {
                                     }
                                 </Tab>
                                 <Tab
+                                    value="3"
+                                    style={styles.tab[3]}
                                     label={<div>With UptoDate<br /> Libraries</div>}
                                 >
                                     <div>
@@ -259,6 +387,8 @@ export default class ComponentLevel extends Component {
                                     </div>
                                 </Tab>
                                 <Tab
+                                    value="4"
+                                    style={styles.tab[4]}
                                     label={<div>With Latest Version <br />Unknown libraries</div>}
                                 >
                                     <div>
@@ -277,6 +407,8 @@ export default class ComponentLevel extends Component {
                                     </div>
                                 </Tab>
                                 <Tab
+                                    value="5"
+                                    style={styles.tab[5]}
                                     label={<div>With Release Date Unknown<br /> outdated libraries</div>}
                                 >
                                     <div>
@@ -296,6 +428,8 @@ export default class ComponentLevel extends Component {
                                 </Tab>
                                 {/* eslint-disable */}
                                 <Tab
+                                    value="6"
+                                    style={styles.tab[6]}
                                     label={<div>With Outdated &gt;{this.props.outdatedMonthCount}&nbsp; months<br />
                                         (before {this.props.referenceDate})</div>}
                                 >
@@ -316,6 +450,8 @@ export default class ComponentLevel extends Component {
                                 </Tab>
                                 {/* eslint-enable */}
                                 <Tab
+                                    value="7"
+                                    style={styles.tab[7]}
                                     label={<div>With Outdated &lt;{this.props.outdatedMonthCount}&nbsp; months<br />
                                         (after {this.props.referenceDate})</div>}
                                 >
@@ -338,7 +474,9 @@ export default class ComponentLevel extends Component {
                         </div>
                     </Tab>
                     <Tab
+                        value="1"
                         label="Library View"
+                        style={styles.tab[1]}
                     >
                         <div>
                             <h5>
@@ -346,8 +484,14 @@ export default class ComponentLevel extends Component {
                             </h5>
                         </div><br />
                         <div>
-                            <Tabs>
+                            <Tabs
+                                value={this.state.slideIndexLib}
+                                onChange={this.handleChangeLib}
+                                style={{ backgroundColor: '#000000' }}
+                            >
                                 <Tab
+                                    value="10"
+                                    style={styles.tab[10]}
                                     label={<div>All<br /> Libraries</div>}
                                 >
                                     <div>
@@ -365,6 +509,8 @@ export default class ComponentLevel extends Component {
                                     </div>
                                 </Tab>
                                 <Tab
+                                    value="11"
+                                    style={styles.tab[11]}
                                     label={<div>UptoDate<br /> Libraries</div>}
                                 >
                                     <div>
@@ -382,6 +528,8 @@ export default class ComponentLevel extends Component {
                                     </div>
                                 </Tab>
                                 <Tab
+                                    value="12"
+                                    style={styles.tab[12]}
                                     label={<div>Latest Version <br />Unknown libraries</div>}
                                 >
                                     <div>
@@ -399,6 +547,8 @@ export default class ComponentLevel extends Component {
                                     </div>
                                 </Tab>
                                 <Tab
+                                    value="13"
+                                    style={styles.tab[13]}
                                     label={<div>Release Date Unknown<br /> outdated libraries</div>}
                                 >
                                     <div>
@@ -417,6 +567,8 @@ export default class ComponentLevel extends Component {
                                 </Tab>
                                 {/* eslint-disable */}
                                 <Tab
+                                    value="14"
+                                    style={styles.tab[14]}
                                     label={<div>Outdated &lt;{this.props.outdatedMonthCount}&nbsp; months<br />
                                         (below {this.props.referenceDate})</div>}
                                 >
@@ -436,6 +588,8 @@ export default class ComponentLevel extends Component {
                                 </Tab>
                                 {/* eslint-enable */}
                                 <Tab
+                                    value="15"
+                                    style={styles.tab[15]}
                                     label={<div>Outdated &gt;{this.props.outdatedMonthCount}&nbsp; months<br />
                                         older
                                         (above {this.props.referenceDate})</div>}

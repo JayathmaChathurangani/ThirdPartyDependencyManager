@@ -1,7 +1,6 @@
 /* eslint react/prop-types: 0 */
 import React, { Component } from 'react';
 import { Card, CardActions, CardMedia, CardHeader, CardTitle, CardText } from 'material-ui/Card';// eslint-disable-line
-import { GridList } from 'material-ui/GridList';
 import { Grid, Typography } from 'material-ui-next';// eslint-disable-line
 import Avatar from 'material-ui/Avatar';
 import okPNG from '../../../assets/images/ok.png';
@@ -10,24 +9,6 @@ import alertPNG from '../../../assets/images/alertYellow.png';
 import GetProductVersions from '../../../services/dashboardDependency/database/GetVersions';
 import ProductVersionGadget from '../Gadgets/ProductVersions';
 
-const styles = {
-    root: {
-        display: 'flex',
-        flexWrap: 'nowrap',
-        justifyContent: 'space-around',
-    },
-    gridList: {
-        display: 'flex',
-        flexWrap: 'nowrap',
-        overflowX: 'auto',
-        cellHeight: 'auto',
-        height: '470px',
-        // width: 2000,
-    },
-    titleStyle: {
-        color: 'rgb(0, 188, 212)',
-    },
-};
 /**
  * @class Products
  * @extends {Component}
@@ -90,7 +71,6 @@ export default class Products extends Component {
     * @description Load the Product Versions
     */
     loadVersions() {
-        // const update = this.props;
         GetProductVersions.getVersions(this.state.productName).then((response) => {
             let i = 0;
             const array = [];
@@ -137,13 +117,13 @@ export default class Products extends Component {
                         actAsExpander={true}// eslint-disable-line
                         showExpandableButton={true}// eslint-disable-line
                         titleStyle={{ fontSize: '22px' }}
-                        style={{ backgroundColor: '#1A237E', paddingRight: '0', paddingLeft: '0', paddingTop: '0' }}
+                        style={{ backgroundColor: '#212121', paddingRight: '0', paddingLeft: '0', paddingTop: '0' }}
                     >
                         <div style={{
-                            backgroundColor: '#1A237E',
+                            backgroundColor: '#212121',
                             paddingRight: '0',
                             paddingLeft: 5,
-                            fontSize: '20px' }}
+                            fontSize: '22px' }}
                         >
                             {this.state.uptodate ?
                                 <Avatar
@@ -173,18 +153,21 @@ export default class Products extends Component {
                     {/* eslint-disable */}
                     {items.length > 0 ?
                         <CardText expandable={true} >
-                            <div style={{ marginTop: +5, marginLeft: 0 }}>
-                                <div style={styles.root}>
-                                    <GridList style={styles.gridList} padding={4} cols={1}>
-                                        {items.map((item) => (
-                                            <ProductVersionGadget
-                                                key={item}
-                                                prName={this.props.prodName}
-                                                prVersion={item}
-                                            />
-                                        )) }
-                                    </GridList>
-                                </div>
+                            <div style={{
+                                marginTop: +5,
+                                marginLeft: 0,
+                                height: '250px',
+                                width: 'auto',
+                                overflow: 'auto',
+                                }}
+                            >
+                                {items.map((item) => (
+                                    <ProductVersionGadget
+                                        key={item}
+                                        prName={this.props.prodName}
+                                        prVersion={item}
+                                    />
+                                )) }
                             </div>
                         </CardText>
                         :
