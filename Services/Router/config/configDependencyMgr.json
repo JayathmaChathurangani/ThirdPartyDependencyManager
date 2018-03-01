@@ -1,0 +1,18 @@
+{
+  "LM_JDBC": {
+    "DB_URL":"jdbc:mysql://localhost:3306/TestLicenceManager?useSSL=false",
+    "DB_USERNAME": "root",
+    "DB_PASSWORD": "wso2",
+    "MAXIMUM_POOL_SIZE": "100"
+  },
+  "PQD_JDBC": {
+    "DB_URL":"jdbc:mysql://localhost:3306/product_quality_dashboard?useSSL=false",
+    "DB_USERNAME": "root",
+    "DB_PASSWORD": "wso2",
+    "MAXIMUM_POOL_SIZE": "100"
+  },
+  "LM_ROUTER_SERVICE": {
+    "URL":"https://localhost:9091/dependencyManager/router/"
+  },
+  "REFERENCE_DATE":"2017-09-30"
+}
